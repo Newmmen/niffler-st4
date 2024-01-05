@@ -5,13 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import guru.qa.niffler.model.UserType;
+
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface User {
 
-  UserType value() default UserType.COMMON;
+  UserType value();
 
-  enum UserType {
-    WITH_FRIENDS, COMMON
-  }
 }

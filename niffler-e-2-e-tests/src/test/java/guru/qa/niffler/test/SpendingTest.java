@@ -12,8 +12,6 @@ import guru.qa.niffler.pages.SpendingPages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Selenide.$;
-
 public class SpendingTest {
     private final LoginPage loginPage = new LoginPage();
     private final SpendingPages spendingPages = new SpendingPages();

@@ -1,26 +1,22 @@
 package guru.qa.niffler.test;
 
-import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.User;
 import guru.qa.niffler.jupiter.UsersQueueExtension;
 import guru.qa.niffler.model.UserJson;
+import guru.qa.niffler.pages.LoginPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static com.codeborne.selenide.Selenide.$;
-import static guru.qa.niffler.jupiter.User.UserType.WITH_FRIENDS;
+import static guru.qa.niffler.model.UserType.WITH_FRIENDS;
 
 @ExtendWith(UsersQueueExtension.class)
 public class FriendsTest {
+  LoginPage loginPage = new LoginPage();
 
   @BeforeEach
   void doLogin(@User(WITH_FRIENDS) UserJson user) {
-    Selenide.open("http://127.0.0.1:3000/main");
-    $("a[href*='redirect']").click();
-    $("input[name='username']").setValue(user.username());
-    $("input[name='password']").setValue(user.testData().password());
-    $("button[type='submit']").click();
+    loginPage.doLoginWithData(user.username(),user.testData().password());
   }
 
   @Test

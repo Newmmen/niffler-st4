@@ -3,6 +3,7 @@ package guru.qa.niffler.jupiter;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.TestData;
 import guru.qa.niffler.model.UserJson;
+import guru.qa.niffler.model.UserType;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -16,25 +17,31 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static guru.qa.niffler.jupiter.User.UserType.COMMON;
-import static guru.qa.niffler.jupiter.User.UserType.WITH_FRIENDS;
+import static guru.qa.niffler.model.UserType.INCOMING_REQUEST;
+import static guru.qa.niffler.model.UserType.SENT_REQUEST;
+import static guru.qa.niffler.model.UserType.WITH_FRIENDS;
+
 
 public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
 
   public static final ExtensionContext.Namespace NAMESPACE
       = ExtensionContext.Namespace.create(UsersQueueExtension.class);
 
-  private static Map<User.UserType, Queue<UserJson>> users = new ConcurrentHashMap<>();
+  private static Map<UserType, Queue<UserJson>> users = new ConcurrentHashMap<>();
 
   static {
     Queue<UserJson> friendsQueue = new ConcurrentLinkedQueue<>();
-    Queue<UserJson> commonQueue = new ConcurrentLinkedQueue<>();
+    Queue<UserJson> incomingRequest = new ConcurrentLinkedQueue<>();
+    Queue<UserJson> sentRequest = new ConcurrentLinkedQueue<>();
     friendsQueue.add(user("dima", "12345", WITH_FRIENDS));
     friendsQueue.add(user("duck", "12345", WITH_FRIENDS));
-    commonQueue.add(user("bee", "12345", COMMON));
-    commonQueue.add(user("barsik", "12345", COMMON));
+    incomingRequest.add(user("incomeFriend", "1235456", INCOMING_REQUEST));
+    incomingRequest.add(user("incomeFriend1", "1235456", INCOMING_REQUEST));
+    sentRequest.add(user("sentRequest", "1235456", SENT_REQUEST));
+    sentRequest.add(user("sentRequest1", "1235456", SENT_REQUEST));
     users.put(WITH_FRIENDS, friendsQueue);
-    users.put(COMMON, commonQueue);
+    users.put(INCOMING_REQUEST, incomingRequest);
+    users.put(SENT_REQUEST, sentRequest);
   }
 
   @Override
@@ -76,7 +83,7 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
         .get(extensionContext.getUniqueId(), UserJson.class);
   }
 
-  private static UserJson user(String username, String password, User.UserType userType) {
+  private static UserJson user(String username, String password, UserType userType) {
     return new UserJson(
         null,
         username,

@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class SpendingPages {
 
-    @Step("click first spending in table by description {spendingDescription}")
+    @Step("click first spending in table by description [{spendingDescription}]")
     public void clickFirstSpendingByDescription(String spendingDescription) {
         $(".spendings-table tbody")
                 .$$("tr")

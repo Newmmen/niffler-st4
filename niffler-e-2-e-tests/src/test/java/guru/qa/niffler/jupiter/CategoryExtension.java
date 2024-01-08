@@ -39,21 +39,21 @@ public class CategoryExtension implements BeforeEachCallback, ParameterResolver 
 
             List<CategoryJson> categoryJsonList = categoryApi.getCategories(categoryData.username()).execute().body();
 
-            if (categoryJsonList != null) {
-                if (checkCategoryNotExistForUser(categoryJsonList, categoryJson.username())) {
-                    CategoryJson createdCategory = categoryApi.addCategory(categoryJson).execute().body();
-                    extensionContext.getStore(NAMESPACE_CATEGORY)
-                            .put("category", createdCategory);
-                } else {
-                    CategoryJson existingCategory = categoryJsonList.stream()
-                            .filter(categoryJson1 -> categoryJson.category().equals(categoryData.description()))
-                            .findFirst()
-                            .get();
-                    extensionContext.getStore(NAMESPACE_CATEGORY)
-                            .put("category", existingCategory);
-                }
+            CategoryJson categoryJsonForSave;
+
+            if (checkCategoryNotExistForUser(categoryJsonList, categoryJson.username())) {
+                categoryJsonForSave = categoryApi.addCategory(categoryJson).execute().body();
+
+            } else {
+                categoryJsonForSave = categoryJsonList.stream()
+                        .filter(categoryJson1 -> categoryJson.category().equals(categoryData.description()))
+                        .findFirst()
+                        .get();
             }
+            extensionContext.getStore(NAMESPACE_CATEGORY)
+                    .put("category", categoryJsonForSave);
         }
+
     }
 
     @Override public boolean supportsParameter(ParameterContext parameterContext,
@@ -66,7 +66,7 @@ public class CategoryExtension implements BeforeEachCallback, ParameterResolver 
     @Override public Object resolveParameter(ParameterContext parameterContext,
                                              ExtensionContext extensionContext) throws ParameterResolutionException {
         return extensionContext.getStore(NAMESPACE_CATEGORY)
-                .get("spend", CategoryJson.class);
+                .get("category", CategoryJson.class);
     }
 
     private boolean checkCategoryNotExistForUser(List<CategoryJson> categoryJsonList, String username) {

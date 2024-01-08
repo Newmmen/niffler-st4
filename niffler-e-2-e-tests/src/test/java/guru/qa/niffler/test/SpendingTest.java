@@ -1,7 +1,6 @@
 package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Configuration;
-import guru.qa.niffler.elements.ButtonElement;
 import guru.qa.niffler.jupiter.DeleteUserSpendingsIfExist;
 import guru.qa.niffler.jupiter.GenerateCategory;
 import guru.qa.niffler.jupiter.GenerateSpend;
@@ -12,12 +11,9 @@ import guru.qa.niffler.pages.SpendingPages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Selenide.$;
-
 public class SpendingTest {
     private final LoginPage loginPage = new LoginPage();
     private final SpendingPages spendingPages = new SpendingPages();
-    private final ButtonElement buttonElement = new ButtonElement();
     private final String category = "AnotherTest1";
 
     static {
@@ -46,8 +42,8 @@ public class SpendingTest {
     )
     @Test
     void spendingShouldBeDeletedByButtonDeleteSpending(SpendJson spend) {
-        spendingPages.clickFirstSpendingByDescription(spend.description());
-        buttonElement.clickButtonByText("Delete selected");
-        spendingPages.checkSpendingTableSizeEqualsZero();
+        spendingPages.clickFirstSpendingByDescription(spend.description())
+                .deleteSelectedSpending()
+                .checkSpendingTableSizeEqualsZero();
     }
 }

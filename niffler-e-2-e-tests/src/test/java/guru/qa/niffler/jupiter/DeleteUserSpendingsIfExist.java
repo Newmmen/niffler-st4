@@ -5,12 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import guru.qa.niffler.model.UserType;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface User {
+@Target(ElementType.METHOD)
+@ExtendWith(DeleteSpendingsIfExist.class)
+public @interface DeleteUserSpendingsIfExist {
 
-  UserType value();
-
+    String username();
 }

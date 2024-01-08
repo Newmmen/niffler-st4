@@ -5,12 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import guru.qa.niffler.model.UserType;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface User {
+@Target(ElementType.METHOD)
+@ExtendWith(CategoryExtension.class)
+public @interface GenerateCategory {
 
-  UserType value();
+    String username();
 
+    String description();
 }

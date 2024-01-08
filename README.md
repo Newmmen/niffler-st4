@@ -106,7 +106,8 @@ Dmitriis-MacBook-Pro  niffler % bash localenv.sh
 Или выполнив последовательно команды, для *nix:
 
 ```posh
-docker run --name niffler-all -p 5432:5432 -e POSTGRES_PASSWORD=secret -v pgdata:/var/lib/postgresql/data -d postgres:15.1
+docker run --name niffler-all -p 5433:5432 -e POSTGRES_PASSWORD=secret -v pgdata:/var/lib/postgresql/data -d 
+postgres:15.1
 
 docker run --name=zookeeper -e ZOOKEEPER_CLIENT_PORT=2181 -e ZOOKEEPER_TICK_TIME=2000 -p 2181:2181 -d confluentinc/cp-zookeeper:7.3.2
 
@@ -122,7 +123,7 @@ docker run --name=kafka -e KAFKA_BROKER_ID=1 \
 Для Windows:
 
 ```posh
-docker run --name niffler-all -p 5432:5432 -e POSTGRES_PASSWORD=secret -v pgdata:/var/lib/postgresql/data -d postgres:15.1
+docker run --name niffler-all -p 5433:5433 -e POSTGRES_PASSWORD=secret -v pgdata:/var/lib/postgresql/data -d postgres:15.1
 
 docker run --name=zookeeper -e ZOOKEEPER_CLIENT_PORT=2181 -e ZOOKEEPER_TICK_TIME=2000 -p 2181:2181 -d confluentinc/cp-zookeeper:7.3.2
 
@@ -135,7 +136,7 @@ https://github.com/confluentinc/cp-docker-images/issues/801#issuecomment-6920851
 
 Например, DBeaver или Datagrip. Мы рекомендуем бесплатную PgAdmin 4.
 
-#### 6. Подключиться к БД postgres (host: localhost, port: 5432, user: postgres, pass: secret, database name: postgres) из PgAdmin и создать пустые БД микросервисов
+#### 6. Подключиться к БД postgres (host: localhost, port: 5433, user: postgres, pass: secret, database name: postgres) из PgAdmin и создать пустые БД микросервисов
 
 ```sql
 create

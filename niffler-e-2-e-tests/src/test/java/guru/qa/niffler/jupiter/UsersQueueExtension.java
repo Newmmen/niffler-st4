@@ -3,6 +3,7 @@ package guru.qa.niffler.jupiter;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.TestData;
 import guru.qa.niffler.model.UserJson;
 import guru.qa.niffler.model.UserType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -49,9 +51,12 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterTestExecuti
 
     @Override
     public void beforeEach(ExtensionContext context) {
+        List<Method> methods = new ArrayList<>();
+        methods.add(context.getRequiredTestMethod());
 
-        List<Method> methods = Arrays.stream(context.getRequiredTestClass().getDeclaredMethods())
-                .toList();
+      Arrays.stream(context.getRequiredTestClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(BeforeEach.class))
+                .forEach(methods::add);
 
         List<Parameter> parameters = methods.stream()
                 .map(Executable::getParameters)
